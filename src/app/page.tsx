@@ -2,89 +2,62 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import RollingGallery from '@/components/RollingGallery';
-import { Sparkles, Target, Palette, TrendingUp, Users, BarChart3, Lightbulb, Zap, ArrowRight, CheckCircle, Layers, Brain, Rocket, Moon, Sun, Menu, X } from 'lucide-react';
-import FadeContent from '@/components/FadeContent'; // Adjust path as needed
-import LogoCloud from '@/components/logo-cloud';
-import Testimonials from '@/components/Testimonials';
-import FlipCards from '@/components/FlipCards';
+import RollingGallery from '../components/RollingGallery';
+import { Sparkles, Target, Palette, TrendingUp, Users, BarChart3, Lightbulb, Zap, ArrowRight, CheckCircle, Layers, Brain, Rocket, Moon, Sun, Menu, X, Instagram } from 'lucide-react';
+import FadeContent from '../components/FadeContent';
+import LogoCloud from '../components/logo-cloud';
+import Testimonials from '../components/Testimonials';
 
-// Flip Card Component
-function FlipCard({ number, icon, title, description, isDark, delay }: {
-  number: string;
+// Feature Card Component (replacing FlipCard)
+function FeatureCard({ icon, title, description, isDark, delay }: {
   icon: React.ReactNode;
   title: string;
   description: string;
   isDark: boolean;
   delay: string;
 }) {
-  const [isFlipped, setIsFlipped] = useState(false);
-
   return (
     <div 
       className="relative group animate-in fade-in slide-in-from-bottom duration-700"
-      style={{ animationDelay: `${delay}ms`, perspective: '1000px' }}
+      style={{ animationDelay: `${delay}ms` }}
     >
-      <div className={`absolute -top-2 md:-top-4 -left-2 md:-left-4 text-4xl md:text-6xl font-bold z-20 ${
-        isDark ? 'text-neutral-800' : 'text-neutral-200'
-      }`}>/ {number}</div>
-      
-      <div 
-        className="relative w-full h-80 md:h-96 cursor-pointer"
-        onClick={() => setIsFlipped(!isFlipped)}
-      >
-        <div 
-          className={`absolute w-full h-full transition-all duration-500 ${
-            isFlipped ? 'opacity-0' : 'opacity-100'
-          }`}
-          style={{ 
-            transformStyle: 'preserve-3d',
-            backfaceVisibility: 'hidden',
-            transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
-          }}
-        >
-          {/* Front Side */}
-          <div className={`w-full h-full border rounded-3xl p-6 md:p-8 flex flex-col items-center justify-center transition-all hover:scale-105 duration-300 ${
-            isDark 
-              ? 'bg-neutral-900 border-neutral-800 hover:border-amber-500/50' 
-              : 'bg-white border-neutral-200 hover:border-amber-500/50'
+      <div className={`w-full h-full min-h-[500px] md:min-h-[550px] rounded-3xl p-6 md:p-8 flex flex-col transition-all hover:scale-[1.02] duration-300 ${
+        isDark 
+          ? 'bg-neutral-900 border border-neutral-800 hover:border-neutral-700' 
+          : 'bg-white border border-neutral-200 hover:border-neutral-300'
+      }`}>
+        <div className="relative mb-6">
+          <div className={`w-32 h-32 md:w-40 md:h-40 rounded-3xl flex items-center justify-center shadow-xl transition-transform group-hover:scale-105 ${
+            isDark ? 'bg-neutral-800' : 'bg-neutral-100'
           }`}>
-            <div className="relative mb-6">
-              <div className={`w-32 h-32 md:w-40 md:h-40 rounded-3xl flex items-center justify-center shadow-2xl transition-transform group-hover:scale-110 ${
-                isDark ? 'bg-gradient-to-br from-neutral-800 to-neutral-900' : 'bg-gradient-to-br from-neutral-50 to-neutral-100'
-              }`}>
-                {icon}
-              </div>
-            </div>
-            <h3 className="text-xl md:text-2xl font-bold text-center">{title}</h3>
+            {icon}
           </div>
         </div>
-
-        <div 
-          className={`absolute w-full h-full transition-all duration-500 ${
-            isFlipped ? 'opacity-100' : 'opacity-0 pointer-events-none'
-          }`}
-          style={{ 
-            transformStyle: 'preserve-3d',
-            backfaceVisibility: 'hidden',
-            transform: isFlipped ? 'rotateY(0deg)' : 'rotateY(180deg)'
-          }}
-        >
-          {/* Back Side */}
-          <div className="w-full h-full bg-amber-400 rounded-3xl p-6 md:p-8 flex flex-col justify-between hover:scale-105 transition-all duration-300">
-            <div>
-              <p className="text-neutral-950 font-medium leading-relaxed text-sm md:text-base mb-6">
-                {description}
-              </p>
-            </div>
-            <button className="flex items-center gap-2 text-neutral-950 group/btn mt-auto">
-              <div className="w-8 h-8 bg-neutral-950 rounded-full flex items-center justify-center transition-all group-hover/btn:scale-110">
-                <ArrowRight className="w-4 h-4 text-amber-400 group-hover/btn:translate-x-1 transition-transform" />
-              </div>
-              <span className="text-sm font-semibold">Learn more</span>
-            </button>
+        
+        <h3 className={`text-xl md:text-2xl font-bold mb-4 ${
+          isDark ? 'text-white' : 'text-neutral-950'
+        }`}>
+          {title}
+        </h3>
+        
+        <p className={`leading-relaxed text-sm md:text-base mb-6 ${
+          isDark ? 'text-neutral-300' : 'text-neutral-600'
+        }`}>
+          {description}
+        </p>
+        
+        <button className="flex items-center gap-2 group/btn mt-auto">
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all group-hover/btn:scale-110 ${
+            isDark ? 'bg-white' : 'bg-neutral-900'
+          }`}>
+            <ArrowRight className={`w-4 h-4 group-hover/btn:translate-x-1 transition-transform ${
+              isDark ? 'text-neutral-950' : 'text-white'
+            }`} />
           </div>
-        </div>
+          <span className={`text-sm font-semibold ${
+            isDark ? 'text-white' : 'text-neutral-950'
+          }`}>Learn more</span>
+        </button>
       </div>
     </div>
   );
@@ -102,34 +75,24 @@ export default function LandingPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const flipCardData = [
+  const featureCardData = [
     {
-      number: '01',
-      icon: <Palette className="w-12 h-12 text-amber-500" />,
-      title: 'Creative Generation',
-      description: 'Generates high-fidelity visuals, copy, and video concepts tailored to your strategy.',
+      icon: <BarChart3 className="w-16 h-16 md:w-20 md:h-20 text-neutral-400 stroke-[1.5]" />,
+      title: "Strategic Research & Concept",
+      description: "We begin by deeply understanding your business goals and target audience. Our team conducts comprehensive market research, competitor analysis, and consumer behavior studies. Using data-driven insights, we identify unique opportunities and craft strategic concepts that resonate with your audience.",
       delay: '0'
     },
     {
-      number: '02',
-      icon: <TrendingUp className="w-12 h-12 text-amber-500" />,
-      title: 'Performance Prediction',
-      description: 'Simulates campaign performance across channels with confidence intervals and optimization suggestions.',
+      icon: <Instagram className="w-16 h-16 md:w-20 md:h-20 text-neutral-400 stroke-[1.5]" />,
+      title: "Autonomous Asset Generation",
+      description: "Our advanced AI technology takes your approved concept and brings it to life. We automatically generate high-quality visual assets and cohesive brand materials. The system intelligently creates multiple variations, optimizes content, and ensures brand consistency.",
+      delay: '100'
+    },
+    {
+      icon: <TrendingUp className="w-16 h-16 md:w-20 md:h-20 text-neutral-400 stroke-[1.5]" />,
+      title: "Interactive Campaign Canvas",
+      description: "Review your entire campaign in our intuitive canvas interface. You have complete control to regenerate individual assets, edit copy, adjust visuals, and fine-tune every detail. Our collaborative platform allows real-time feedback and approvals for immediate deployment across your marketing channels.",
       delay: '200'
-    },
-    {
-      number: '03',
-      icon: <Users className="w-12 h-12 text-amber-500" />,
-      title: 'Audience Targeting',
-      description: 'Maps psychographics and behaviors to create hyper-targeted audience segments.',
-      delay: '400'
-    },
-    {
-      number: '04',
-      icon: <BarChart3 className="w-12 h-12 text-amber-500" />,
-      title: 'ROI Forecasting',
-      description: 'Projects revenue lift and cost efficiencies based on historical data and market trends.',
-      delay: '600'
     }
   ];
 
@@ -266,7 +229,6 @@ export default function LandingPage() {
                   <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
                     There is a<br />
                     <span className="inline-flex items-center gap-3">
-                      {/* <Brain className="w-8 h-8 md:w-12 md:h-12 text-amber-500 animate-pulse" /> */}
                       Better Way
                     </span><br />
                     to Campaign.
@@ -310,12 +272,6 @@ export default function LandingPage() {
                         </div>
 
                         {/* Stacked layers with staggered animations */}
-                        {/* Smaller Target Icon */}
-                        <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center animate-pulse">
-                          <Target className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                        </div>
-
-                        {/* Stacked layers - only top layer has image */}
                         <div className="absolute inset-0 rotate-6 transform-gpu transition-transform hover:rotate-16 duration-300">
                           <div className={`w-full h-full rounded-3xl shadow-2xl ${
                             isDark ? 'bg-gradient-to-br from-neutral-200 to-neutral-300' : 'bg-gradient-to-br from-neutral-100 to-neutral-200'
@@ -407,8 +363,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <LogoCloud></LogoCloud>
-      <Testimonials></Testimonials>
+      <LogoCloud />
+      <Testimonials />
 
       {/* How It Works Section */}
       <section id="how-it-works" className={`py-12 md:py-20 px-4 md:px-8 ${isDark ? 'bg-neutral-950' : 'bg-neutral-50'}`}>
@@ -428,12 +384,11 @@ export default function LandingPage() {
             </button>
           </div>
 
-          {/* Inline FlipCards implementation */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {flipCardData.map((data, idx) => (
-              <FlipCard
+          {/* Feature Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {featureCardData.map((data, idx) => (
+              <FeatureCard
                 key={idx}
-                number={data.number}
                 icon={data.icon}
                 title={data.title}
                 description={data.description}
